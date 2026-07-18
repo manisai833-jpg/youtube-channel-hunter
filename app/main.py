@@ -1,8 +1,21 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from app.youtube import search_channel
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://youtube-channel-hunter.onrender.com",
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 templates = Jinja2Templates(directory="templates")
 
