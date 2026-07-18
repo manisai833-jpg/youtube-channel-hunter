@@ -17,7 +17,8 @@ def search_channel(
     min_subs=0,
     max_subs=999999999999,
     sort="subscribers_desc",
-    limit=100
+    limit=100,
+    country=None
 ):
     try:
         results = []
@@ -51,6 +52,14 @@ def search_channel(
                     continue
 
                 channel = channel_response["items"][0]
+
+                if country:
+                    channel_country = channel.get("snippet", {}).get("country")
+                    if not channel_country:
+                        continue
+
+                    if channel_country.upper() != country.upper():
+                        continue
 
                 subscribers = int(
                     channel["statistics"].get("subscriberCount", 0)

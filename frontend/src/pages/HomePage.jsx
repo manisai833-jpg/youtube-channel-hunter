@@ -24,6 +24,7 @@ function HomePage() {
   const [channels, setChannels] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedSubscriberRange, setSelectedSubscriberRange] = useState(DEFAULT_SUBSCRIBER_RANGE)
+  const [selectedCountry, setSelectedCountry] = useState('')
   const [resultsCount, setResultsCount] = useState(5)
 
   const handleSearch = async (searchQuery = query) => {
@@ -42,7 +43,7 @@ function HomePage() {
     setChannels([])
 
     try {
-      const data = await searchChannels(trimmedQuery, selectedSubscriberRange, resultsCount)
+      const data = await searchChannels(trimmedQuery, selectedSubscriberRange, resultsCount, selectedCountry)
 
       if (data?.success === false) {
         setError(data.error || 'No results found.')
@@ -74,6 +75,10 @@ function HomePage() {
 
   const handleSubscriberRangeSelect = (range) => {
     setSelectedSubscriberRange(range)
+  }
+
+  const handleCountryChange = (value) => {
+    setSelectedCountry(value)
   }
 
   return (
@@ -135,6 +140,42 @@ function HomePage() {
                     </button>
                   )
                 })}
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <p className="mb-3 text-sm font-medium text-slate-500">Country</p>
+              <div className="flex justify-center">
+                <label className="sr-only" htmlFor="country-select">
+                  Country
+                </label>
+                <select
+                  id="country-select"
+                  value={selectedCountry}
+                  onChange={(event) => handleCountryChange(event.target.value)}
+                  disabled={isLoading}
+                  className="w-full max-w-xs rounded-full border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 outline-none disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <option value="">All Countries</option>
+                  <option value="IN">India (IN)</option>
+                  <option value="US">United States (US)</option>
+                  <option value="GB">United Kingdom (GB)</option>
+                  <option value="CA">Canada (CA)</option>
+                  <option value="AU">Australia (AU)</option>
+                  <option value="JP">Japan (JP)</option>
+                  <option value="DE">Germany (DE)</option>
+                  <option value="FR">France (FR)</option>
+                  <option value="BR">Brazil (BR)</option>
+                  <option value="KR">South Korea (KR)</option>
+                  <option value="ID">Indonesia (ID)</option>
+                  <option value="PH">Philippines (PH)</option>
+                  <option value="MX">Mexico (MX)</option>
+                  <option value="ES">Spain (ES)</option>
+                  <option value="IT">Italy (IT)</option>
+                  <option value="NL">Netherlands (NL)</option>
+                  <option value="SG">Singapore (SG)</option>
+                  <option value="MY">Malaysia (MY)</option>
+                </select>
               </div>
             </div>
 

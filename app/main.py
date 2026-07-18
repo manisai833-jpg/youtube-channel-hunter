@@ -28,12 +28,14 @@ def search(
     min_subs: int = 0,
     max_subs: int = 999999999999,
     sort: str = "subscribers_desc",
-    limit: int = 25
+    limit: int = 25,
+    country: str | None = None
 ):
     return search_channel(
         channel,
         min_subs,
         max_subs,
         sort,
-        limit
+        limit,
+        country
     )
