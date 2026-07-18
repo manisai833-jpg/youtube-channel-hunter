@@ -5,9 +5,17 @@ import PopularSearches from '../components/PopularSearches'
 import EmptyResults from '../components/EmptyResults'
 import ResultsSection from '../components/ResultsSection'
 import Footer from '../components/Footer'
-import { searchChannels } from '../services/youtubeApi'
+import { DEFAULT_SUBSCRIBER_RANGE, searchChannels } from '../services/youtubeApi'
 
 const popularCategories = ['Gaming', 'Anime', 'Tech', 'Finance', 'Education', 'Cooking']
+const subscriberRanges = [
+  { label: 'Any', value: DEFAULT_SUBSCRIBER_RANGE },
+  { label: '1K – 10K', value: { min_subs: 1000, max_subs: 10000 } },
+  { label: '10K – 100K', value: { min_subs: 10000, max_subs: 100000 } },
+  { label: '100K – 1M', value: { min_subs: 100000, max_subs: 1000000 } },
+  { label: '1M – 10M', value: { min_subs: 1000000, max_subs: 10000000 } },
+  { label: '10M+', value: { min_subs: 10000000, max_subs: 999999999999 } },
+]
 
 function HomePage() {
   const [query, setQuery] = useState('')
@@ -15,6 +23,7 @@ function HomePage() {
   const [error, setError] = useState('')
   const [channels, setChannels] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedSubscriberRange, setSelectedSubscriberRange] = useState(DEFAULT_SUBSCRIBER_RANGE)
 
   const handleSearch = async (searchQuery = query) => {
     const trimmedQuery = searchQuery.trim()
@@ -32,7 +41,7 @@ function HomePage() {
     setChannels([])
 
     try {
-      const data = await searchChannels(trimmedQuery)
+      const data = await searchChannels(trimmedQuery, selectedSubscriberRange)
 
       if (data?.success === false) {
         setError(data.error || 'No results found.')
@@ -62,6 +71,10 @@ function HomePage() {
     }
   }
 
+  const handleSubscriberRangeSelect = (range) => {
+    setSelectedSubscriberRange(range)
+  }
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 sm:px-6 lg:px-8">
@@ -88,6 +101,33 @@ function HomePage() {
                 onSelect={handleCategoryClick}
                 isLoading={isLoading}
               />
+            </div>
+
+            <div className="mt-6">
+              <p className="mb-3 text-sm font-medium text-slate-500">Subscriber Range</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {subscriberRanges.map((range) => {
+                  const isActive =
+                    selectedSubscriberRange.min_subs === range.value.min_subs &&
+                    selectedSubscriberRange.max_subs === range.value.max_subs
+
+                  return (
+                    <button
+                      key={range.label}
+                      type="button"
+                      onClick={() => handleSubscriberRangeSelect(range.value)}
+                      disabled={isLoading}
+                      className={`rounded-full border px-4 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${
+                        isActive
+                          ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
+                          : 'border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50'
+                      }`}
+                    >
+                      {range.label}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
             <div className="mt-10">

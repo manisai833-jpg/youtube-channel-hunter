@@ -1,7 +1,16 @@
 const API_BASE_URL = 'https://youtube-channel-hunter.onrender.com'
 
-export async function searchChannels(query) {
-  const params = new URLSearchParams({ channel: query.trim() })
+export const DEFAULT_SUBSCRIBER_RANGE = {
+  min_subs: 0,
+  max_subs: 999999999999,
+}
+
+export async function searchChannels(query, range = DEFAULT_SUBSCRIBER_RANGE) {
+  const params = new URLSearchParams({
+    channel: query.trim(),
+    min_subs: String(range?.min_subs ?? DEFAULT_SUBSCRIBER_RANGE.min_subs),
+    max_subs: String(range?.max_subs ?? DEFAULT_SUBSCRIBER_RANGE.max_subs),
+  })
 
   try {
     const response = await fetch(`${API_BASE_URL}/search?${params.toString()}`)
