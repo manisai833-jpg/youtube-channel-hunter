@@ -5,11 +5,12 @@ export const DEFAULT_SUBSCRIBER_RANGE = {
   max_subs: 999999999999,
 }
 
-export async function searchChannels(query, range = DEFAULT_SUBSCRIBER_RANGE) {
+export async function searchChannels(query, range = DEFAULT_SUBSCRIBER_RANGE, limit = 5) {
   const params = new URLSearchParams({
     channel: query.trim(),
     min_subs: String(range?.min_subs ?? DEFAULT_SUBSCRIBER_RANGE.min_subs),
     max_subs: String(range?.max_subs ?? DEFAULT_SUBSCRIBER_RANGE.max_subs),
+    limit: String(limit),
   })
 
   try {

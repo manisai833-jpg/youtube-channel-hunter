@@ -24,6 +24,7 @@ function HomePage() {
   const [channels, setChannels] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedSubscriberRange, setSelectedSubscriberRange] = useState(DEFAULT_SUBSCRIBER_RANGE)
+  const [resultsCount, setResultsCount] = useState(5)
 
   const handleSearch = async (searchQuery = query) => {
     const trimmedQuery = searchQuery.trim()
@@ -41,7 +42,7 @@ function HomePage() {
     setChannels([])
 
     try {
-      const data = await searchChannels(trimmedQuery, selectedSubscriberRange)
+      const data = await searchChannels(trimmedQuery, selectedSubscriberRange, resultsCount)
 
       if (data?.success === false) {
         setError(data.error || 'No results found.')
@@ -90,7 +91,14 @@ function HomePage() {
             </p>
 
             <div className="mt-8">
-              <SearchBar value={query} onChange={handleQueryChange} onSearch={() => handleSearch(query)} isLoading={isLoading} />
+              <SearchBar
+                value={query}
+                onChange={handleQueryChange}
+                onSearch={() => handleSearch(query)}
+                isLoading={isLoading}
+                resultsCount={resultsCount}
+                onResultsCountChange={setResultsCount}
+              />
             </div>
 
             <div className="mt-6">

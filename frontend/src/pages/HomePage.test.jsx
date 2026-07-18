@@ -26,13 +26,13 @@ describe('HomePage search behavior', () => {
     render(<HomePage />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Gaming' }))
-    await waitFor(() => expect(searchChannels).toHaveBeenCalledWith('Gaming', anyRange))
+    await waitFor(() => expect(searchChannels).toHaveBeenCalledWith('Gaming', anyRange, 5))
 
     fireEvent.click(screen.getByRole('button', { name: 'Anime' }))
-    await waitFor(() => expect(searchChannels).toHaveBeenLastCalledWith('Anime', anyRange))
+    await waitFor(() => expect(searchChannels).toHaveBeenLastCalledWith('Anime', anyRange, 5))
 
     fireEvent.click(screen.getByRole('button', { name: 'Tech' }))
-    await waitFor(() => expect(searchChannels).toHaveBeenLastCalledWith('Tech', anyRange))
+    await waitFor(() => expect(searchChannels).toHaveBeenLastCalledWith('Tech', anyRange, 5))
   })
 
   it('includes the selected subscriber range in every search request', async () => {
@@ -44,7 +44,7 @@ describe('HomePage search behavior', () => {
     fireEvent.change(input, { target: { value: 'Gaming' } })
     fireEvent.click(screen.getByRole('button', { name: 'Search' }))
 
-    await waitFor(() => expect(searchChannels).toHaveBeenCalledWith('Gaming', anyRange))
+    await waitFor(() => expect(searchChannels).toHaveBeenCalledWith('Gaming', anyRange, 5))
 
     fireEvent.click(screen.getByRole('button', { name: '10K – 100K' }))
     fireEvent.click(screen.getByRole('button', { name: 'Search' }))
@@ -53,7 +53,21 @@ describe('HomePage search behavior', () => {
       expect(searchChannels).toHaveBeenLastCalledWith('Gaming', {
         min_subs: 10000,
         max_subs: 100000,
-      })
+      }, 5)
     )
+  })
+
+  it('sends the selected results count as the limit for searches', async () => {
+    searchChannels.mockResolvedValue({ success: true, channels: [] })
+
+    render(<HomePage />)
+
+    const input = screen.getByPlaceholderText('Search YouTube channels...')
+    fireEvent.change(input, { target: { value: 'Gaming' } })
+
+    fireEvent.change(screen.getByLabelText('Results'), { target: { value: '10' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+
+    await waitFor(() => expect(searchChannels).toHaveBeenCalledWith('Gaming', anyRange, 10))
   })
 })
