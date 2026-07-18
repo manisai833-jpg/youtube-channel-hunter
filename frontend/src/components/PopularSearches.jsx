@@ -1,17 +1,27 @@
-function PopularSearches() {
-  const items = ['Gaming', 'Cooking', 'Tech', 'Education', 'Finance', 'Anime']
+import React from 'react'
 
+function PopularSearches({ categories, selectedCategory, onSelect, isLoading }) {
   return (
     <div className="flex flex-wrap justify-center gap-2">
-      {items.map((item) => (
-        <button
-          key={item}
-          type="button"
-          className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700"
-        >
-          {item}
-        </button>
-      ))}
+      {categories.map((item) => {
+        const isActive = selectedCategory === item
+
+        return (
+          <button
+            key={item}
+            type="button"
+            onClick={() => onSelect(item)}
+            disabled={isLoading}
+            className={`rounded-full border px-4 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${
+              isActive
+                ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
+                : 'border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50'
+            }`}
+          >
+            {item}
+          </button>
+        )
+      })}
     </div>
   )
 }

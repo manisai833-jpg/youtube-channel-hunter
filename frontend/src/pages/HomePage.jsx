@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import SearchBar from '../components/SearchBar'
 import PopularSearches from '../components/PopularSearches'
@@ -7,14 +7,19 @@ import ResultsSection from '../components/ResultsSection'
 import Footer from '../components/Footer'
 import { searchChannels } from '../services/youtubeApi'
 
+const popularCategories = ['Gaming', 'Anime', 'Tech', 'Finance', 'Education', 'Cooking']
+
 function HomePage() {
   const [query, setQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [channels, setChannels] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState('')
 
-  const handleSearch = async () => {
-    const trimmedQuery = query.trim()
+  const handleSearch = async (searchQuery = query) => {
+    const trimmedQuery = searchQuery.trim()
+
+    setQuery(trimmedQuery)
 
     if (!trimmedQuery) {
       setError('Please enter a search term.')
@@ -44,6 +49,19 @@ function HomePage() {
     }
   }
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category)
+    handleSearch(category)
+  }
+
+  const handleQueryChange = (value) => {
+    setQuery(value)
+
+    if (selectedCategory && value.trim().toLowerCase() !== selectedCategory.toLowerCase()) {
+      setSelectedCategory('')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 sm:px-6 lg:px-8">
@@ -59,12 +77,17 @@ function HomePage() {
             </p>
 
             <div className="mt-8">
-              <SearchBar value={query} onChange={setQuery} onSearch={handleSearch} isLoading={isLoading} />
+              <SearchBar value={query} onChange={handleQueryChange} onSearch={() => handleSearch(query)} isLoading={isLoading} />
             </div>
 
             <div className="mt-6">
               <p className="mb-3 text-sm font-medium text-slate-500">Popular Searches</p>
-              <PopularSearches />
+              <PopularSearches
+                categories={popularCategories}
+                selectedCategory={selectedCategory}
+                onSelect={handleCategoryClick}
+                isLoading={isLoading}
+              />
             </div>
 
             <div className="mt-10">

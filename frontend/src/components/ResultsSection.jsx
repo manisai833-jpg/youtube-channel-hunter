@@ -1,3 +1,5 @@
+import React from 'react'
+
 function ResultsSection({ isLoading, error, channels, query }) {
   if (isLoading) {
     return (

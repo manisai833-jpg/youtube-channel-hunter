@@ -1,3 +1,4 @@
+import React from 'react'
 import { Search } from 'lucide-react'
 
 function SearchBar({ value, onChange, onSearch, isLoading }) {
