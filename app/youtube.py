@@ -5,11 +5,25 @@ from app.config import YOUTUBE_API_KEY
 from datetime import datetime, timezone
 import re
 
-youtube = build(
-    "youtube",
-    "v3",
-    developerKey=YOUTUBE_API_KEY
-)
+_youtube = None
+
+
+def get_youtube():
+    global _youtube
+
+    if _youtube is None:
+        if not YOUTUBE_API_KEY:
+            raise ValueError(
+                "YOUTUBE_API_KEY is not set. Copy .env.example to .env and add your key."
+            )
+
+        _youtube = build(
+            "youtube",
+            "v3",
+            developerKey=YOUTUBE_API_KEY
+        )
+
+    return _youtube
 
 
 def search_channel(
@@ -21,6 +35,7 @@ def search_channel(
     country=None
 ):
     try:
+        youtube = get_youtube()
         results = []
         next_page_token = None
 
