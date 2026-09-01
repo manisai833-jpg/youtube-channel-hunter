@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from app.youtube import search_channel
@@ -28,7 +28,7 @@ def search(
     min_subs: int = 0,
     max_subs: int = 999999999999,
     sort: str = "subscribers_desc",
-    limit: int = 25,
+    limit: int = Query(default=25, ge=1, le=50),
     country: str | None = None
 ):
     return search_channel(
