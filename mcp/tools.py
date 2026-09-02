@@ -23,3 +23,8 @@ def search_youtube(channel: str, limit: int = 5) -> dict:
             "success": False,
             "error": str(exc),
         }
+    except ValueError:
+        return {
+            "success": False,
+            "error": "YouTube API returned an invalid response.",
+        }
