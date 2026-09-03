@@ -24,7 +24,7 @@ def home(request: Request):
 
 @app.get("/search")
 def search(
-    channel: str,
+    channel: str = Query(default=..., min_length=1, max_length=100),
     min_subs: int = 0,
     max_subs: int = 999999999999,
     sort: str = "subscribers_desc",
