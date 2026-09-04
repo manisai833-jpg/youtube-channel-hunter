@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
@@ -27,7 +29,12 @@ def search(
     channel: str = Query(default=..., min_length=1, max_length=100),
     min_subs: int = 0,
     max_subs: int = 999999999999,
-    sort: str = "subscribers_desc",
+    sort: Literal[
+        "subscribers_desc",
+        "subscribers_asc",
+        "views_desc",
+        "views_asc",
+    ] = "subscribers_desc",
     limit: int = Query(default=25, ge=1, le=50),
     country: str | None = None
 ):
