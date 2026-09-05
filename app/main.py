@@ -1,6 +1,6 @@
 from typing import Literal
 
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from app.youtube import search_channel
@@ -27,8 +27,8 @@ def home(request: Request):
 @app.get("/search")
 def search(
     channel: str = Query(default=..., min_length=1, max_length=100),
-    min_subs: int = 0,
-    max_subs: int = 999999999999,
+    min_subs: int = Query(default=0, ge=0),
+    max_subs: int = Query(default=999999999999, ge=0),
     sort: Literal[
         "subscribers_desc",
         "subscribers_asc",
@@ -38,6 +38,12 @@ def search(
     limit: int = Query(default=25, ge=1, le=50),
     country: str | None = None
 ):
+    if min_subs > max_subs:
+        raise HTTPException(
+            status_code=422,
+            detail="min_subs must be less than or equal to max_subs",
+        )
+
     return search_channel(
         channel,
         min_subs,
