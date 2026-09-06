@@ -36,7 +36,7 @@ def search(
         "views_asc",
     ] = "subscribers_desc",
     limit: int = Query(default=25, ge=1, le=50),
-    country: str | None = None
+    country: str | None = Query(default=None, pattern=r"^[A-Za-z]{2}$"),
 ):
     if min_subs > max_subs:
         raise HTTPException(
