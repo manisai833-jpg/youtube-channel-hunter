@@ -293,7 +293,7 @@ def search_channel(
         }
 
     except HttpError as e:
-        status_code = getattr(e, "status_code", None)
+        status_code = getattr(getattr(e, "resp", None), "status", None)
 
         if status_code == 429:
             return JSONResponse(
