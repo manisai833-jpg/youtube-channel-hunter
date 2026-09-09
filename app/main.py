@@ -26,7 +26,9 @@ def home(request: Request):
 
 @app.get("/search")
 def search(
-    channel: str = Query(default=..., min_length=1, max_length=100),
+    channel: str = Query(
+        default=..., min_length=1, max_length=100, pattern=r"^.*\S.*$"
+    ),
     min_subs: int = Query(default=0, ge=0),
     max_subs: int = Query(default=999999999999, ge=0),
     sort: Literal[
