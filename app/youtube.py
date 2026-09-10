@@ -41,6 +41,7 @@ def search_channel(
     try:
         youtube = get_youtube()
         results = []
+        seen_channel_ids = set()
         next_page_token = None
 
         while len(results) < limit:
@@ -59,6 +60,10 @@ def search_channel(
 
             for item in search_response["items"]:
                 channel_id = item["snippet"]["channelId"]
+
+                if channel_id in seen_channel_ids:
+                    continue
+                seen_channel_ids.add(channel_id)
 
                 channel_request = youtube.channels().list(
                     part="snippet,statistics",
