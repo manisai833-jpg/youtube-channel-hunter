@@ -5,6 +5,12 @@ import httpx
 
 def search_youtube(channel: str, limit: int = 5) -> dict:
     """Call the deployed YouTube search API and return its JSON response."""
+    if not channel.strip():
+        return {
+            "success": False,
+            "error": "Channel query cannot be blank.",
+        }
+
     if not 1 <= limit <= 50:
         return {
             "success": False,
