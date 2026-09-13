@@ -26,9 +26,14 @@ def search_youtube(channel: str, limit: int = 5) -> dict:
         response.raise_for_status()
         return response.json()
     except httpx.HTTPStatusError as exc:
+        try:
+            error_data = exc.response.json()
+        except ValueError:
+            error_data = {}
+        error = error_data.get("detail") if isinstance(error_data, dict) else None
         return {
             "success": False,
-            "error": str(exc),
+            "error": error or str(exc),
         }
     except httpx.RequestError as exc:
         return {
