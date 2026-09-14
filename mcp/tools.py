@@ -11,6 +11,12 @@ def search_youtube(channel: str, limit: int = 5) -> dict:
             "error": "Channel query cannot be blank.",
         }
 
+    if len(channel) > 100:
+        return {
+            "success": False,
+            "error": "Channel query must be 100 characters or fewer.",
+        }
+
     if not 1 <= limit <= 50:
         return {
             "success": False,
