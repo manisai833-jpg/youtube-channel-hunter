@@ -41,6 +41,11 @@ def search_youtube(channel: str, limit: int = 5) -> dict:
             "success": False,
             "error": error or str(exc),
         }
+    except httpx.TimeoutException:
+        return {
+            "success": False,
+            "error": "YouTube API request timed out. Please try again.",
+        }
     except httpx.RequestError as exc:
         return {
             "success": False,
