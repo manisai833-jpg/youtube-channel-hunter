@@ -72,7 +72,7 @@ def search_channel(
 
                 channel_response = channel_request.execute()
 
-                if not channel_response["items"]:
+                if not channel_response.get("items"):
                     continue
 
                 channel = channel_response["items"][0]
