@@ -59,7 +59,10 @@ def search_channel(
                 break
 
             for item in search_response["items"]:
-                channel_id = item["snippet"]["channelId"]
+                channel_id = item.get("snippet", {}).get("channelId")
+
+                if not channel_id:
+                    continue
 
                 if channel_id in seen_channel_ids:
                     continue
