@@ -80,6 +80,9 @@ def search_channel(
 
                 channel = channel_response["items"][0]
 
+                if "snippet" not in channel or "statistics" not in channel:
+                    continue
+
                 if country:
                     channel_country = channel.get("snippet", {}).get("country")
                     if not channel_country:
