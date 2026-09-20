@@ -112,8 +112,9 @@ def search_channel(
 
                 if latest_video_response.get("items"):
                     latest_video = latest_video_response["items"][0]
-                    latest_video_title = latest_video["snippet"]["title"]
-                    latest_video_published_at = latest_video["snippet"]["publishedAt"]
+                    latest_video_snippet = latest_video.get("snippet", {})
+                    latest_video_title = latest_video_snippet.get("title")
+                    latest_video_published_at = latest_video_snippet.get("publishedAt")
 
                 if latest_video_published_at:
                     published_dt = datetime.fromisoformat(
