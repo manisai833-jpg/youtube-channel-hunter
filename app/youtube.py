@@ -135,7 +135,7 @@ def search_channel(
                     days_since_last_upload = None
                     activity_status = "Unknown"
 
-                description_text = channel["snippet"]["description"]
+                description_text = channel["snippet"].get("description", "")
                 urls = re.findall(r"https?://[^\s,]+", description_text)
                 contact_links = {}
 
@@ -265,7 +265,7 @@ def search_channel(
 
                 results.append({
                     "channel_name": channel["snippet"]["title"],
-                    "description": channel["snippet"]["description"][:200],
+                    "description": description_text[:200],
                     "channel_id": channel_id,
                     "channel_url": f"https://www.youtube.com/channel/{channel_id}",
                     "thumbnail": channel["snippet"]["thumbnails"]["high"]["url"],
