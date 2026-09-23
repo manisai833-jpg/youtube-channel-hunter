@@ -269,7 +269,7 @@ def search_channel(
                     "channel_id": channel_id,
                     "channel_url": f"https://www.youtube.com/channel/{channel_id}",
                     "thumbnail": channel["snippet"].get("thumbnails", {}).get("high", {}).get("url"),
-                    "published_at": channel["snippet"]["publishedAt"],
+                    "published_at": channel["snippet"].get("publishedAt"),
                     "subscribers": subscribers,
                     "views": int(channel["statistics"].get("viewCount", 0)),
                     "videos": int(channel["statistics"].get("videoCount", 0)),
