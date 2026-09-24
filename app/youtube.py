@@ -264,7 +264,7 @@ def search_channel(
                     recommendation = "Skip for now. Channel is inactive."
 
                 results.append({
-                    "channel_name": channel["snippet"]["title"],
+                    "channel_name": channel["snippet"].get("title", "Unknown Channel"),
                     "description": description_text[:200],
                     "channel_id": channel_id,
                     "channel_url": f"https://www.youtube.com/channel/{channel_id}",
