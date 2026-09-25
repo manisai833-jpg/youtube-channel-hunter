@@ -91,9 +91,12 @@ def search_channel(
                     if channel_country.upper() != country.upper():
                         continue
 
-                subscribers = int(
-                    channel["statistics"].get("subscriberCount", 0)
-                )
+                subscriber_count = channel["statistics"].get("subscriberCount", 0)
+
+                try:
+                    subscribers = int(subscriber_count)
+                except (TypeError, ValueError):
+                    continue
 
                 if subscribers < min_subs or subscribers > max_subs:
                     continue
