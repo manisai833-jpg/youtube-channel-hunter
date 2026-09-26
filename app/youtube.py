@@ -119,10 +119,17 @@ def search_channel(
                     latest_video_title = latest_video_snippet.get("title")
                     latest_video_published_at = latest_video_snippet.get("publishedAt")
 
+                published_dt = None
+
                 if latest_video_published_at:
-                    published_dt = datetime.fromisoformat(
-                        latest_video_published_at.replace("Z", "+00:00")
-                    )
+                    try:
+                        published_dt = datetime.fromisoformat(
+                            latest_video_published_at.replace("Z", "+00:00")
+                        )
+                    except (AttributeError, ValueError):
+                        pass
+
+                if published_dt:
                     now_utc = datetime.now(timezone.utc)
                     days_since_last_upload = (now_utc - published_dt).days
 
