@@ -98,6 +98,11 @@ def search_channel(
                 except (TypeError, ValueError):
                     continue
 
+                try:
+                    views = int(channel["statistics"].get("viewCount", 0))
+                except (TypeError, ValueError):
+                    views = 0
+
                 if subscribers < min_subs or subscribers > max_subs:
                     continue
 
@@ -281,7 +286,7 @@ def search_channel(
                     "thumbnail": channel["snippet"].get("thumbnails", {}).get("high", {}).get("url"),
                     "published_at": channel["snippet"].get("publishedAt"),
                     "subscribers": subscribers,
-                    "views": int(channel["statistics"].get("viewCount", 0)),
+                    "views": views,
                     "videos": int(channel["statistics"].get("videoCount", 0)),
                     "latest_video_title": latest_video_title,
                     "latest_video_published_at": latest_video_published_at,
