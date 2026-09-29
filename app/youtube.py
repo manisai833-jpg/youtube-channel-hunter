@@ -103,6 +103,11 @@ def search_channel(
                 except (TypeError, ValueError):
                     views = 0
 
+                try:
+                    video_count = int(channel["statistics"].get("videoCount", 0))
+                except (TypeError, ValueError):
+                    video_count = 0
+
                 if subscribers < min_subs or subscribers > max_subs:
                     continue
 
@@ -248,7 +253,7 @@ def search_channel(
                         "reason": "Subscriber count does not match the requested range"
                     }
 
-                if int(channel["statistics"].get("videoCount", 0)) > 100:
+                if video_count > 100:
                     lead_score += 10
                     score_breakdown["video_count"] = {
                         "points": 10,
@@ -287,7 +292,7 @@ def search_channel(
                     "published_at": channel["snippet"].get("publishedAt"),
                     "subscribers": subscribers,
                     "views": views,
-                    "videos": int(channel["statistics"].get("videoCount", 0)),
+                    "videos": video_count,
                     "latest_video_title": latest_video_title,
                     "latest_video_published_at": latest_video_published_at,
                     "days_since_last_upload": days_since_last_upload,
