@@ -59,6 +59,9 @@ def search_channel(
                 break
 
             for item in search_response["items"]:
+                if not isinstance(item, dict):
+                    continue
+
                 channel_id = item.get("snippet", {}).get("channelId")
 
                 if not channel_id:
