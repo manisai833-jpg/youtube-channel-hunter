@@ -83,6 +83,9 @@ def search_channel(
 
                 channel = channel_response["items"][0]
 
+                if not isinstance(channel, dict):
+                    continue
+
                 if "snippet" not in channel or "statistics" not in channel:
                     continue
 
