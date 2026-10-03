@@ -55,6 +55,9 @@ def search_channel(
 
             search_response = search_request.execute()
 
+            if not isinstance(search_response, dict):
+                break
+
             if not search_response.get("items"):
                 break
 
