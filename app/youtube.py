@@ -81,6 +81,9 @@ def search_channel(
 
                 channel_response = channel_request.execute()
 
+                if not isinstance(channel_response, dict):
+                    continue
+
                 if not channel_response.get("items"):
                     continue
 
