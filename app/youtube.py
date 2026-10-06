@@ -65,7 +65,12 @@ def search_channel(
                 if not isinstance(item, dict):
                     continue
 
-                channel_id = item.get("snippet", {}).get("channelId")
+                item_snippet = item.get("snippet")
+
+                if not isinstance(item_snippet, dict):
+                    continue
+
+                channel_id = item_snippet.get("channelId")
 
                 if not channel_id:
                     continue
