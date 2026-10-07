@@ -100,6 +100,12 @@ def search_channel(
                 if "snippet" not in channel or "statistics" not in channel:
                     continue
 
+                if (
+                    not isinstance(channel["snippet"], dict)
+                    or not isinstance(channel["statistics"], dict)
+                ):
+                    continue
+
                 if country:
                     channel_country = channel.get("snippet", {}).get("country")
                     if not channel_country:
