@@ -153,9 +153,11 @@ def search_channel(
                     latest_video = latest_video_response["items"][0]
 
                     if isinstance(latest_video, dict):
-                        latest_video_snippet = latest_video.get("snippet", {})
-                        latest_video_title = latest_video_snippet.get("title")
-                        latest_video_published_at = latest_video_snippet.get("publishedAt")
+                        latest_video_snippet = latest_video.get("snippet")
+
+                        if isinstance(latest_video_snippet, dict):
+                            latest_video_title = latest_video_snippet.get("title")
+                            latest_video_published_at = latest_video_snippet.get("publishedAt")
 
                 published_dt = None
 
