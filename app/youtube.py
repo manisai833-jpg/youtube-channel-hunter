@@ -186,6 +186,9 @@ def search_channel(
                     activity_status = "Unknown"
 
                 description_text = channel["snippet"].get("description", "")
+
+                if not isinstance(description_text, str):
+                    description_text = ""
                 urls = re.findall(r"https?://[^\s,]+", description_text)
                 contact_links = {}
 
