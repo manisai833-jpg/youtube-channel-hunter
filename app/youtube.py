@@ -108,7 +108,7 @@ def search_channel(
 
                 if country:
                     channel_country = channel.get("snippet", {}).get("country")
-                    if not channel_country:
+                    if not isinstance(channel_country, str):
                         continue
 
                     if channel_country.upper() != country.upper():
