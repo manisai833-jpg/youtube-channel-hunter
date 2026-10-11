@@ -72,7 +72,7 @@ def search_channel(
 
                 channel_id = item_snippet.get("channelId")
 
-                if not channel_id:
+                if not isinstance(channel_id, str) or not channel_id.strip():
                     continue
 
                 if channel_id in seen_channel_ids:
