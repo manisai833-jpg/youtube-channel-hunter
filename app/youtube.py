@@ -316,12 +316,24 @@ def search_channel(
                     lead_rating = "Skip"
                     recommendation = "Skip for now. Channel is inactive."
 
+                thumbnail_url = None
+                thumbnails = channel["snippet"].get("thumbnails")
+
+                if isinstance(thumbnails, dict):
+                    high_thumbnail = thumbnails.get("high")
+
+                    if isinstance(high_thumbnail, dict):
+                        thumbnail_url = high_thumbnail.get("url")
+
+                        if not isinstance(thumbnail_url, str):
+                            thumbnail_url = None
+
                 results.append({
                     "channel_name": channel["snippet"].get("title", "Unknown Channel"),
                     "description": description_text[:200],
                     "channel_id": channel_id,
                     "channel_url": f"https://www.youtube.com/channel/{channel_id}",
-                    "thumbnail": channel["snippet"].get("thumbnails", {}).get("high", {}).get("url"),
+                    "thumbnail": thumbnail_url,
                     "published_at": channel["snippet"].get("publishedAt"),
                     "subscribers": subscribers,
                     "views": views,
