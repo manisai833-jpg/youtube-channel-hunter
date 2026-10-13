@@ -169,6 +169,9 @@ def search_channel(
                     except (AttributeError, ValueError):
                         pass
 
+                if published_dt and published_dt.tzinfo is None:
+                    published_dt = published_dt.replace(tzinfo=timezone.utc)
+
                 if published_dt:
                     now_utc = datetime.now(timezone.utc)
                     days_since_last_upload = (now_utc - published_dt).days
