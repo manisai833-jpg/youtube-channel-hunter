@@ -174,7 +174,7 @@ def search_channel(
 
                 if published_dt:
                     now_utc = datetime.now(timezone.utc)
-                    days_since_last_upload = (now_utc - published_dt).days
+                    days_since_last_upload = max(0, (now_utc - published_dt).days)
 
                     if days_since_last_upload <= 7:
                         activity_status = "Very Active"
