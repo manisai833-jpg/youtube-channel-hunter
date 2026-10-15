@@ -355,7 +355,7 @@ def search_channel(
 
             next_page_token = search_response.get("nextPageToken")
 
-            if not next_page_token:
+            if not isinstance(next_page_token, str) or not next_page_token:
                 break
 
         if not results:
