@@ -58,10 +58,12 @@ def search_channel(
             if not isinstance(search_response, dict):
                 break
 
-            if not search_response.get("items"):
+            search_items = search_response.get("items")
+
+            if not isinstance(search_items, list) or not search_items:
                 break
 
-            for item in search_response["items"]:
+            for item in search_items:
                 if not isinstance(item, dict):
                     continue
 
