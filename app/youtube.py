@@ -91,10 +91,12 @@ def search_channel(
                 if not isinstance(channel_response, dict):
                     continue
 
-                if not channel_response.get("items"):
+                channel_items = channel_response.get("items")
+
+                if not isinstance(channel_items, list) or not channel_items:
                     continue
 
-                channel = channel_response["items"][0]
+                channel = channel_items[0]
 
                 if not isinstance(channel, dict):
                     continue
