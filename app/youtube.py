@@ -150,11 +150,14 @@ def search_channel(
                 )
                 latest_video_response = latest_video_request.execute()
 
-                if (
-                    isinstance(latest_video_response, dict)
-                    and latest_video_response.get("items")
-                ):
-                    latest_video = latest_video_response["items"][0]
+                latest_video_items = (
+                    latest_video_response.get("items")
+                    if isinstance(latest_video_response, dict)
+                    else None
+                )
+
+                if isinstance(latest_video_items, list) and latest_video_items:
+                    latest_video = latest_video_items[0]
 
                     if isinstance(latest_video, dict):
                         latest_video_snippet = latest_video.get("snippet")
