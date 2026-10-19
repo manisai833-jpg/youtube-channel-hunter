@@ -338,8 +338,13 @@ def search_channel(
                         if not isinstance(thumbnail_url, str):
                             thumbnail_url = None
 
+                channel_title = channel["snippet"].get("title")
+
+                if not isinstance(channel_title, str) or not channel_title.strip():
+                    channel_title = "Unknown Channel"
+
                 results.append({
-                    "channel_name": channel["snippet"].get("title", "Unknown Channel"),
+                    "channel_name": channel_title,
                     "description": description_text[:200],
                     "channel_id": channel_id,
                     "channel_url": f"https://www.youtube.com/channel/{channel_id}",
