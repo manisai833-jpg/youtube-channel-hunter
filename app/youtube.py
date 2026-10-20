@@ -166,6 +166,12 @@ def search_channel(
                             latest_video_title = latest_video_snippet.get("title")
                             latest_video_published_at = latest_video_snippet.get("publishedAt")
 
+                            if not isinstance(latest_video_title, str):
+                                latest_video_title = None
+
+                            if not isinstance(latest_video_published_at, str):
+                                latest_video_published_at = None
+
                 published_dt = None
 
                 if latest_video_published_at:
