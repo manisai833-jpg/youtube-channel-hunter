@@ -349,13 +349,18 @@ def search_channel(
                 if not isinstance(channel_title, str) or not channel_title.strip():
                     channel_title = "Unknown Channel"
 
+                channel_published_at = channel["snippet"].get("publishedAt")
+
+                if not isinstance(channel_published_at, str) or not channel_published_at.strip():
+                    channel_published_at = None
+
                 results.append({
                     "channel_name": channel_title,
                     "description": description_text[:200],
                     "channel_id": channel_id,
                     "channel_url": f"https://www.youtube.com/channel/{channel_id}",
                     "thumbnail": thumbnail_url,
-                    "published_at": channel["snippet"].get("publishedAt"),
+                    "published_at": channel_published_at,
                     "subscribers": subscribers,
                     "views": views,
                     "videos": video_count,
