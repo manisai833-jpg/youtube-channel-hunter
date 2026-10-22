@@ -77,6 +77,8 @@ def search_channel(
                 if not isinstance(channel_id, str) or not channel_id.strip():
                     continue
 
+                channel_id = channel_id.strip()
+
                 if channel_id in seen_channel_ids:
                     continue
                 seen_channel_ids.add(channel_id)
