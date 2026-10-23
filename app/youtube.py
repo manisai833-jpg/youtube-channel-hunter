@@ -378,6 +378,9 @@ def search_channel(
                     "recommendation": recommendation
                 })
 
+                if len(results) >= limit:
+                    break
+
             next_page_token = search_response.get("nextPageToken")
 
             if not isinstance(next_page_token, str) or not next_page_token:
