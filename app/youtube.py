@@ -49,7 +49,7 @@ def search_channel(
                 q=channel_name,
                 type="channel",
                 part="snippet",
-                maxResults=min(50, limit - len(results)),
+                maxResults=50,
                 pageToken=next_page_token
             )
 
