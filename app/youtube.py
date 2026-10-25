@@ -42,9 +42,16 @@ def search_channel(
         youtube = get_youtube()
         results = []
         seen_channel_ids = set()
+        seen_page_tokens = set()
         next_page_token = None
 
         while len(results) < limit:
+            if next_page_token in seen_page_tokens:
+                break
+
+            if next_page_token is not None:
+                seen_page_tokens.add(next_page_token)
+
             search_request = youtube.search().list(
                 q=channel_name,
                 type="channel",
