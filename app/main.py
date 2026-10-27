@@ -50,7 +50,7 @@ def search(
         )
 
     return search_channel(
-        channel,
+        channel.strip(),
         min_subs,
         max_subs,
         sort,
