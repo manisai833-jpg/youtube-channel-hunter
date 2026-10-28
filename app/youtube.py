@@ -127,7 +127,9 @@ def search_channel(
                     if channel_country.upper() != country.upper():
                         continue
 
-                subscriber_count = channel["statistics"].get("subscriberCount", 0)
+                subscriber_count = channel["statistics"].get("subscriberCount")
+                if subscriber_count is None:
+                    continue
 
                 try:
                     subscribers = int(subscriber_count)
