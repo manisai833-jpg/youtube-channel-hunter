@@ -16,7 +16,8 @@ def get_youtube():
     global _youtube
 
     if _youtube is None:
-        if not YOUTUBE_API_KEY:
+        api_key = YOUTUBE_API_KEY.strip() if YOUTUBE_API_KEY else ""
+        if not api_key:
             raise YouTubeConfigurationError(
                 "YOUTUBE_API_KEY is not set. Copy .env.example to .env and add your key."
             )
@@ -24,7 +25,7 @@ def get_youtube():
         _youtube = build(
             "youtube",
             "v3",
-            developerKey=YOUTUBE_API_KEY
+            developerKey=api_key
         )
 
     return _youtube
