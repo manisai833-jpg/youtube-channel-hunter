@@ -393,8 +393,10 @@ def search_channel(
 
             next_page_token = search_response.get("nextPageToken")
 
-            if not isinstance(next_page_token, str) or not next_page_token:
+            if not isinstance(next_page_token, str) or not next_page_token.strip():
                 break
+
+            next_page_token = next_page_token.strip()
 
         if not results:
             return {"success": False, "error": "Channel not found"}
