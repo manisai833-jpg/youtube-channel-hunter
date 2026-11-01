@@ -37,7 +37,9 @@ def search_youtube(channel: str, limit: int = 5) -> dict:
             error_data = exc.response.json()
         except ValueError:
             error_data = {}
-        error = error_data.get("detail") if isinstance(error_data, dict) else None
+        error = None
+        if isinstance(error_data, dict):
+            error = error_data.get("detail") or error_data.get("error")
         return {
             "success": False,
             "error": error or str(exc),
