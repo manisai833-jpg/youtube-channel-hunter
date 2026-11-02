@@ -31,7 +31,13 @@ def search_youtube(channel: str, limit: int = 5) -> dict:
             timeout=15.0,
         )
         response.raise_for_status()
-        return response.json()
+        response_data = response.json()
+        if not isinstance(response_data, dict):
+            return {
+                "success": False,
+                "error": "YouTube API returned an invalid response.",
+            }
+        return response_data
     except httpx.HTTPStatusError as exc:
         try:
             error_data = exc.response.json()
