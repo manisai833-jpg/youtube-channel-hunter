@@ -6,7 +6,7 @@ YouTube Channel Hunter is a FastAPI-powered web application that helps users dis
 
 - Search YouTube channels by keyword
 - Filter by minimum and maximum subscribers
-- Sort by subscribers, views, newest, and oldest
+- Sort by subscribers or views, ascending or descending
 - Detect recently active creators
 - Extract public contact links
 - Detect public business email (when available)
