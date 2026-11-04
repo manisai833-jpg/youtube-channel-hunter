@@ -121,10 +121,10 @@ Example error response:
 
 - `app/` – FastAPI application code and API routes
 - `templates/` – Jinja2 frontend templates
-- `models.py` – data models and helpers
-- `youtube.py` – YouTube API search and enrichment logic
-- `config.py` – configuration and API key settings
-- `main.py` – FastAPI app initialization and routes
+- `app/models.py` – data models and helpers
+- `app/youtube.py` – YouTube API search and enrichment logic
+- `app/config.py` – configuration and API key settings
+- `app/main.py` – FastAPI app initialization and routes
 
 ## Future Roadmap
 
