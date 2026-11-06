@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import Mock, patch
 
+import httpx
+
 from mcp.tools import search_youtube
 
 
@@ -34,6 +36,25 @@ class SearchYouTubeTests(unittest.TestCase):
             {
                 "success": False,
                 "error": "YouTube API returned an invalid response.",
+            },
+        )
+
+    @patch("mcp.tools.httpx.get")
+    def test_surfaces_api_error_message(self, mock_get):
+        request = httpx.Request("GET", "https://example.test")
+        mock_get.return_value = httpx.Response(
+            429,
+            request=request,
+            json={"error": "YouTube API quota exceeded."},
+        )
+
+        result = search_youtube("test", limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "YouTube API quota exceeded.",
             },
         )
 
