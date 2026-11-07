@@ -58,6 +58,21 @@ class SearchYouTubeTests(unittest.TestCase):
             },
         )
 
+    @patch("mcp.tools.httpx.get")
+    def test_reports_request_timeout(self, mock_get):
+        request = httpx.Request("GET", "https://example.test")
+        mock_get.side_effect = httpx.ReadTimeout("timed out", request=request)
+
+        result = search_youtube("test", limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "YouTube API request timed out. Please try again.",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
