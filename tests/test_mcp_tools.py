@@ -8,6 +8,19 @@ from mcp.tools import search_youtube
 
 class SearchYouTubeTests(unittest.TestCase):
     @patch("mcp.tools.httpx.get")
+    def test_rejects_blank_query_before_request(self, mock_get):
+        result = search_youtube("   ", limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "Channel query cannot be blank.",
+            },
+        )
+        mock_get.assert_not_called()
+
+    @patch("mcp.tools.httpx.get")
     def test_normalizes_query_before_request(self, mock_get):
         response = Mock()
         response.raise_for_status.return_value = None
