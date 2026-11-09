@@ -21,6 +21,21 @@ class SearchYouTubeTests(unittest.TestCase):
         mock_get.assert_not_called()
 
     @patch("mcp.tools.httpx.get")
+    def test_rejects_out_of_range_limit_before_request(self, mock_get):
+        for limit in (0, 51):
+            with self.subTest(limit=limit):
+                result = search_youtube("test", limit=limit)
+
+                self.assertEqual(
+                    result,
+                    {
+                        "success": False,
+                        "error": "Limit must be between 1 and 50.",
+                    },
+                )
+        mock_get.assert_not_called()
+
+    @patch("mcp.tools.httpx.get")
     def test_normalizes_query_before_request(self, mock_get):
         response = Mock()
         response.raise_for_status.return_value = None
