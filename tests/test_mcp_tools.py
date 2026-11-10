@@ -21,6 +21,19 @@ class SearchYouTubeTests(unittest.TestCase):
         mock_get.assert_not_called()
 
     @patch("mcp.tools.httpx.get")
+    def test_rejects_oversized_query_before_request(self, mock_get):
+        result = search_youtube("x" * 101, limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "Channel query must be 100 characters or fewer.",
+            },
+        )
+        mock_get.assert_not_called()
+
+    @patch("mcp.tools.httpx.get")
     def test_rejects_out_of_range_limit_before_request(self, mock_get):
         for limit in (0, 51):
             with self.subTest(limit=limit):
