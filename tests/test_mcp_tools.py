@@ -131,6 +131,24 @@ class SearchYouTubeTests(unittest.TestCase):
             },
         )
 
+    @patch("mcp.tools.httpx.get")
+    def test_reports_connection_error(self, mock_get):
+        request = httpx.Request("GET", "https://example.test")
+        mock_get.side_effect = httpx.ConnectError(
+            "connection failed",
+            request=request,
+        )
+
+        result = search_youtube("test", limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "connection failed",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
