@@ -117,6 +117,28 @@ class SearchYouTubeTests(unittest.TestCase):
         )
 
     @patch("mcp.tools.httpx.get")
+    def test_handles_non_json_api_error(self, mock_get):
+        request = httpx.Request("GET", "https://example.test")
+        response = Mock()
+        response.json.side_effect = ValueError("invalid JSON")
+        response.raise_for_status.side_effect = httpx.HTTPStatusError(
+            "server error",
+            request=request,
+            response=response,
+        )
+        mock_get.return_value = response
+
+        result = search_youtube("test", limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "server error",
+            },
+        )
+
+    @patch("mcp.tools.httpx.get")
     def test_reports_request_timeout(self, mock_get):
         request = httpx.Request("GET", "https://example.test")
         mock_get.side_effect = httpx.ReadTimeout("timed out", request=request)
