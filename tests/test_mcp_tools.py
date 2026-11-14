@@ -117,6 +117,25 @@ class SearchYouTubeTests(unittest.TestCase):
         )
 
     @patch("mcp.tools.httpx.get")
+    def test_surfaces_api_detail_message(self, mock_get):
+        request = httpx.Request("GET", "https://example.test")
+        mock_get.return_value = httpx.Response(
+            400,
+            request=request,
+            json={"detail": "Invalid request."},
+        )
+
+        result = search_youtube("test", limit=5)
+
+        self.assertEqual(
+            result,
+            {
+                "success": False,
+                "error": "Invalid request.",
+            },
+        )
+
+    @patch("mcp.tools.httpx.get")
     def test_handles_non_json_api_error(self, mock_get):
         request = httpx.Request("GET", "https://example.test")
         response = Mock()
