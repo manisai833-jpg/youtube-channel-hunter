@@ -49,6 +49,25 @@ class SearchYouTubeTests(unittest.TestCase):
         mock_get.assert_not_called()
 
     @patch("mcp.tools.httpx.get")
+    def test_accepts_limit_boundaries(self, mock_get):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"channels": []}
+        mock_get.return_value = response
+
+        for limit in (1, 50):
+            with self.subTest(limit=limit):
+                result = search_youtube("test", limit=limit)
+
+                self.assertEqual(result, {"channels": []})
+                self.assertEqual(
+                    mock_get.call_args.kwargs["params"]["limit"],
+                    limit,
+                )
+
+        self.assertEqual(mock_get.call_count, 2)
+
+    @patch("mcp.tools.httpx.get")
     def test_normalizes_query_before_request(self, mock_get):
         response = Mock()
         response.raise_for_status.return_value = None
