@@ -34,6 +34,22 @@ class SearchYouTubeTests(unittest.TestCase):
         mock_get.assert_not_called()
 
     @patch("mcp.tools.httpx.get")
+    def test_accepts_maximum_query_length(self, mock_get):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"channels": []}
+        mock_get.return_value = response
+        query = "x" * 100
+
+        result = search_youtube(query, limit=5)
+
+        self.assertEqual(result, {"channels": []})
+        self.assertEqual(
+            mock_get.call_args.kwargs["params"]["channel"],
+            query,
+        )
+
+    @patch("mcp.tools.httpx.get")
     def test_rejects_out_of_range_limit_before_request(self, mock_get):
         for limit in (0, 51):
             with self.subTest(limit=limit):
