@@ -100,6 +100,18 @@ GET `/search?channel=gaming&min_subs=10000&max_subs=500000&limit=5`
 }
 ```
 
+## MCP Server
+
+The repository includes a FastMCP wrapper for AI clients. Start it with:
+
+```bash
+python mcp/server.py
+```
+
+It exposes `search_youtube(channel, limit=5)`. Queries are trimmed and
+validated locally, and `limit` must be between 1 and 50 before a request is
+sent to the deployed API.
+
 ## Error Handling
 
 The API returns friendly JSON messages when external failures occur, instead of crashing.
