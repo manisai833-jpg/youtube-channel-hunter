@@ -14,7 +14,8 @@ if str(project_root) in sys.path:
 
 # Load the installed MCP runtime as the top-level 'mcp' package before importing FastMCP.
 package_dir = None
-for candidate in site.getsitepackages():
+site_package_dirs = [*site.getsitepackages(), site.getusersitepackages()]
+for candidate in site_package_dirs:
     candidate_path = Path(candidate) / "mcp"
     if candidate_path.is_dir() and (candidate_path / "__init__.py").exists():
         package_dir = candidate_path
